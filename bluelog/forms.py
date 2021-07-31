@@ -12,11 +12,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log in')
 
 
-class SendEmailForm(FlaskForm):
-    emailAddress = StringField('Email', validators=[DataRequired(), Length(1, 100)])
-    submit = SubmitField()
-
-
 class RegisterForm(FlaskForm):
     emailAddress = StringField('Email', validators=[DataRequired(), Length(1, 100), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(8, 100), EqualTo('password2')])
@@ -28,6 +23,3 @@ class RegisterForm(FlaskForm):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('The email is already in use')
 
-
-class ConfirmForm(FlaskForm):
-    submit = SubmitField('Send VerificationCode')
