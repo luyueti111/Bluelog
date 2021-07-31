@@ -1,10 +1,8 @@
-import string
-
 from flask import Blueprint, render_template, url_for, redirect, session
 from flask_login import current_user, login_user, login_required, logout_user
 
 from bluelog.models import User
-from bluelog.forms import LoginForm, SendEmailForm, RegisterForm, ConfirmForm
+from bluelog.forms import LoginForm, RegisterForm
 
 from bluelog.extensions import mail, db
 from bluelog.functions import redirect_back
@@ -46,8 +44,6 @@ def logout():
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     registerForm = RegisterForm()
-    confirmForm = ConfirmForm()
-
     if registerForm.validate_on_submit():
         email = registerForm.emailAddress.data
         user = User(email=email, password=registerForm.password.data)
@@ -55,6 +51,6 @@ def register():
         db.session.commit()
         return redirect(url_for('auth.login'))
 
-    return render_template('auth/testRegister.html', registerForm=registerForm, confirmForm=confirmForm)
+    return render_template('auth/register.html', registerForm=registerForm)
 
 

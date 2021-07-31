@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap 101 Template</title>
+    <title>Say Hello</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='/bootstrap-3.4.1-dist/css/bootstrap.min.css') }}">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -55,6 +55,7 @@
                 <li><a href="{{ url_for('auth.logout', next=request.full_path) }}">Logout</a></li>
               {% else %}
                 <li><a href="{{ url_for('auth.login', next=request.full_path) }}">Login</a></li>
+                <li><a href="{{ url_for('auth.register', next=request.full_path) }}">Register</a></li>
               {% endif %}
           </ul>
         </div><!-- /.navbar-collapse -->
