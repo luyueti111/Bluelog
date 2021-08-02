@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% from "macros.html" import show_flash with context %}
+{% block title %}
+    <div class="page-header" style="text-align: center">
+        <h1>Say Hello&nbsp;&nbsp;<small>to the world</small></h1>
+    </div>
+{% endblock title %}
+
+{% block content %}
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <li class="list-group-item" style="margin:0 auto; width:90%">
+            <h4 class="list-group-item-heading">{{ post.title }}<small>&nbsp;&nbsp;&nbsp;#{{ post.name }}</small></h4>
+            <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ post.body }}</p>
+            <small>
+                {{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}
+            </small>
+        </li>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for comment in comments %}
+                <li class="list-group-item">
+                    <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
+                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ comment.body }}</p>
+                    <small>
+                        {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+        <form role="form" method="post">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.name.label(class="h4") }}<br>
+                    {{ form.name(class="form-control ", placeholder="Username", readonly="readonly") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.body.label(class="h4") }}<br>
+                    {{ form.body(class="form-control", placeholder="Please Enter Your Message", rows="3", style="resize: none;") }}
+                </div>
+                {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
+            </div>
+        </form>
+    {{ show_flash() }}
+    </div>
+    <div class="col-md-4"></div>
+{% endblock %}

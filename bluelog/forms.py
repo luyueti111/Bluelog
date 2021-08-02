@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 from bluelog import User
@@ -23,3 +23,15 @@ class RegisterForm(FlaskForm):
         if User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('The email is already in use')
 
+
+class PostForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    title = StringField('Title', validators=[DataRequired(), Length(1, 20)])
+    body = TextAreaField('Message', validators=[DataRequired(), Length(1, 200)])
+    submit = SubmitField()
+
+
+class ReplyForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    body = TextAreaField('Message', validators=[DataRequired(), Length(1, 200)])
+    submit = SubmitField()

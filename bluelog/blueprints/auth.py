@@ -18,18 +18,18 @@ def testCurrent():
 @auth_bp.route('login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('auth.testCurrent'))
+        return redirect(url_for('blog.index'))
 
     loginForm = LoginForm()
     if loginForm.validate_on_submit():
         email = loginForm.email.data
         password = loginForm.password.data
         remember = loginForm.remember.data
-        user = User.query.filter(email == email).first()
+        user = User.query.filter(User.email == email).first()
         if user:
             if email == user.email and password == user.password:
                 login_user(user, remember)
-                return render_template('auth/testCurrent.html')
+                return redirect(url_for('blog.index'))
 
     return render_template('auth/login.html', form=loginForm)
 

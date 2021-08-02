@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% from "macros.html" import show_flash with context %}
+{% block content %}
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form role="form" method="post">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.name.label(class="h4") }}<br>
+                    {{ form.name(class="form-control ", placeholder="Username", readonly="readonly") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.title.label(class="h4") }}<br>
+                    {{ form.title(class="form-control ", placeholder="Title") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.body.label(class="h4") }}<br>
+                    {{ form.body(class="form-control", placeholder="Please Enter Your Message", rows="3", style="resize: none;") }}
+                </div>
+                {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
+            </div>
+        </form>
+        {{ show_flash() }}
+        <h4 style="margin-left: 5%">{{ posts|length }} Posts</h4>
+        <div class="list-group" style="margin:0 auto; width:90%">
+            {% for post in posts %}
+                <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=post.id) }}">
+                    <span class="badge">{{ post.commentNum }}</span>
+                    <h4 class="list-group-item-heading">{{ post.title }}</h4>
+                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ post.body }}</p>
+                    <small style="right: 0">
+                        最后回复:{{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}&nbsp;&nbsp;
+                    </small>
+                    <small>点击量:{{ post.clickNum }}&nbsp;&nbsp;</small>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+{% endblock content %}

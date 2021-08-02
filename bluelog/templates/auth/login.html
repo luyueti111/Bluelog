@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% from "macros.html" import show_flash with context %}
 {% block title %}
     <div class="page-header text-center">
-      <h1>Say Hello <small>to the world</small></h1>
+      <h1>Log in <small>to say hello</small></h1>
     </div>
 {% endblock title %}
 {% block content %}
@@ -24,11 +25,7 @@
                 {{ form.remember.label(style="font-weight: lighter") }}
             </label>
         </div>
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-info">
-            {{ message }}
-            </div>
-        {% endfor %}
+        {{ show_flash() }}
         {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
     </div>
     </form>

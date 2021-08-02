@@ -1,3 +1,4 @@
+from faker import Faker
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
@@ -11,7 +12,7 @@ moment = Moment()
 ckeditor = CKEditor()
 mail = Mail()
 login_manager = LoginManager()
-
+fake = Faker()
 
 @login_manager.user_loader
 def load_user(user_id):
