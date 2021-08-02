@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from "macros.html" import show_footer %}
 
 {% block content %}
     <div class="jumbotron">
@@ -8,4 +9,5 @@
             <p><a class="btn btn-primary btn-lg" href="{{ url_for('blog.index') }}" role="button">Get Start</a></p>
         </div>
     </div>
+    {{ show_footer() }}
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
+{% from "macros.html" import show_footer %}
 {% block content %}
     <div class="col-md-4"></div>
     <div class="col-md-4">
@@ -36,6 +37,7 @@
                 </a>
             {% endfor %}
         </div>
+        {{ show_footer() }}
     </div>
     <div class="col-md-4"></div>
 {% endblock content %}

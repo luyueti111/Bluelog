@@ -8,3 +8,12 @@
         </div>
     {% endfor %}
 {% endmacro %}
+
+{% macro show_footer() %}
+    <footer class="text-center" style="margin-top: 20px;">
+        <small> &copy; 2021 <a href="https://github.com/luyueti111" title="Written by Grey Li">Yueti Lu</a> /
+            <a href="https://github.com/luyueti111/Bluelog" title="Fork me on GitHub">GitHub</a> /
+            <a href="{{ url_for('blog.hello') }}" title="A HelloFlask project">Say Hello</a>
+        </small>
+    </footer>
+{% endmacro %}
