@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 from bluelog import User
@@ -34,4 +34,5 @@ class PostForm(FlaskForm):
 class ReplyForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     body = TextAreaField('Message', validators=[DataRequired(), Length(1, 200)])
+    toName = SelectField('Reply to', choices=[])
     submit = SubmitField()

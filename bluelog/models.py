@@ -37,6 +37,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     body = db.Column(db.Text)
+    replyTo = db.Column(db.String(30))
     from_admin = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.DateTime, default=datetime.now, index=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))

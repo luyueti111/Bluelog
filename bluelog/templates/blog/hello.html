@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Say Hello!</h1>
+            <p>Hello world!</p>
+            <p><a class="btn btn-primary btn-lg" href="{{ url_for('blog.index') }}" role="button">Get Start</a></p>
+        </div>
+    </div>
+{% endblock %}

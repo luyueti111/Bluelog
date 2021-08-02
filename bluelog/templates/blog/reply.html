@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
-{% block title %}
-    <div class="page-header" style="text-align: center">
-        <h1>Say Hello&nbsp;&nbsp;<small>to the world</small></h1>
-    </div>
-{% endblock title %}
 
 {% block content %}
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <li class="list-group-item" style="margin:0 auto; width:90%">
-            <h4 class="list-group-item-heading">{{ post.title }}<small>&nbsp;&nbsp;&nbsp;#{{ post.name }}</small></h4>
-            <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ post.body }}</p>
-            <small>
-                {{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}
-            </small>
-        </li>
+        <div class="panel panel-info" style="margin:0 auto; width:90%;">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="font-size: x-large">{{ post.title }}<br><small>#{{ post.name }}</small></h3>
+            </div>
+            <div class="panel-body">
+                <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ post.body }}</p>
+                <small>
+                    {{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}
+                </small>
+            </div>
+        </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for comment in comments %}
                 <li class="list-group-item">
-                    <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
-                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ comment.body }}</p>
+{#                    <div style="border:0 ;width:102%;">#}
+{#                        <button class="btn btn-default btn-sm" style="float:right" type="button">Reply</button>#}
+{#                    </div>#}
+                    {% if comment.name == post.name %}
+                        <h4 class="list-group-item-heading text-info">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
+                    {% else %}
+                        <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
+                    {% endif %}
+
+                    {% if comment.replyTo is not none and comment.replyTo != comment.name%}
+                        <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
+                    {% endif %}
+                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ comment.body }}</p>
                     <small>
                         {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
                     </small>
@@ -33,6 +43,10 @@
                 <div class="input-group" style="margin:0 auto; width:90%">
                     {{ form.name.label(class="h4") }}<br>
                     {{ form.name(class="form-control ", placeholder="Username", readonly="readonly") }}
+                </div>
+                <h4 style="margin-left: 5%">Reply to</h4>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.toName(class="selectpicker") }}
                 </div>
                 <div class="input-group" style="margin:0 auto; width:90%">
                     {{ form.body.label(class="h4") }}<br>
