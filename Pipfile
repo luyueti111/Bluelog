@@ -17,6 +17,8 @@ faker = "*"
 flask-login = "*"
 flask-wtf = "*"
 email-validator = "*"
+requests = "*"
+bs4 = "*"
 
 [dev-packages]
 
