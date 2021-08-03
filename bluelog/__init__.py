@@ -11,7 +11,7 @@ from bluelog.blueprints.admin import admin_bp
 from bluelog.blueprints.blog import blog_bp
 
 
-def creat_app(config_name=None):
+def create_app(config_name=None):
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
