@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
+{% from "macros.html" import show_comment %}
+
 {% block content %}
     <div class="col-md-4"></div>
     <div class="col-md-4">
@@ -17,24 +19,7 @@
         </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for comment in comments %}
-                <li class="list-group-item">
-{#                    <div style="border:0 ;width:102%;">#}
-{#                        <button class="btn btn-default btn-sm" style="float:right" type="button">Reply</button>#}
-{#                    </div>#}
-                    {% if comment.name == post.name %}
-                        <h4 class="list-group-item-heading text-info">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
-                    {% else %}
-                        <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ loop.index }}</small></h4>
-                    {% endif %}
-
-                    {% if comment.replyTo is not none and comment.replyTo != comment.name%}
-                        <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
-                    {% endif %}
-                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ comment.body }}</p>
-                    <small>
-                        {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
-                    </small>
-                </li>
+                {{ show_comment(comment, isHref=False) }}
             {% endfor %}
         </ul>
         <form role="form" method="post">

@@ -1,12 +1,14 @@
 from datetime import datetime
 
-from flask import Blueprint, redirect, url_for, render_template, flash
+from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
+from jieba import lcut_for_search
+
 
 from bluelog import db
 from bluelog.extensions import fake
-from bluelog.forms import PostForm, ReplyForm
+from bluelog.forms import PostForm, ReplyForm, SearchForm
 from bluelog.models import Post, Comment, User, FakeName
 
 blog_bp = Blueprint('blog', __name__)
@@ -37,6 +39,7 @@ def index():
             return redirect(url_for('blog.index'))
         else:
             flash('Please Login to Post Message')
+
     form.name.data = fake.name()
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('blog/index.html',
@@ -60,7 +63,7 @@ def replyPage(post_id):
             toName = replyForm.toName.data
             if toName == post.name:
                 toName = None
-            comment = Comment(body=body, name=name, replyTo=toName)
+            comment = Comment(body=body, name=name, replyTo=toName, commentFloor=post.commentNum + 1)
             user = User.query.get(current_user.id)
             post.timestamp = datetime.now()
             comment.user = user
@@ -87,3 +90,25 @@ def replyPage(post_id):
                            comments=comments,
                            form=replyForm,
                            post=post)
+
+
+@blog_bp.route('/search', methods=['GET', 'POST'])
+def searchMessage():
+    searchForm = SearchForm()
+    if searchForm.validate_on_submit():
+        searchRule = searchForm.body.data
+        searchList = lcut_for_search(searchRule)
+        rules = ""
+        for rule in searchList:
+            rules += rule + "|"
+        rules = rules.rstrip("|")
+        searchedPost = Post.query.filter(or_(Post.body.op('regexp')(rules),
+                                             Post.title.op('regexp')(rules)))
+        searchComment = Comment.query.filter(Comment.body.op('regexp')(rules))
+
+
+        return render_template('blog/search.html',
+                               searchPostNumber=searchedPost.count(),
+                               searchCommentNumber=searchComment.count(),
+                               posts=searchedPost,
+                               comments=searchComment)

@@ -2,6 +2,7 @@ import os
 
 import click
 
+from bluelog.forms import SearchForm
 from bluelog.models import User
 from bluelog.settings import config
 from flask import Flask, render_template
@@ -55,7 +56,10 @@ def register_shell_context(app):
 
 
 def register_template_context(app):
-    pass
+    @app.context_processor
+    def injectSearchForm():
+        searchForm = SearchForm()
+        return dict(searchForm=searchForm)
 
 
 def register_errors(app):

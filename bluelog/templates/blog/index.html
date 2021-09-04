@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
+{% from "macros.html" import show_post %}
+
+
 {% block content %}
     <div class="col-md-4"></div>
     <div class="col-md-4">
@@ -26,15 +29,7 @@
         <h4 style="margin-left: 5%">{{ posts|length }} Posts</h4>
         <div class="list-group" style="margin:0 auto; width:90%">
             {% for post in posts %}
-                <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=post.id) }}">
-                    <span class="badge">{{ post.commentNum }}</span>
-                    <h4 class="list-group-item-heading">{{ post.title }}</h4>
-                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ post.body }}</p>
-                    <small style="right: 0">
-                        最后回复:{{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}&nbsp;&nbsp;
-                    </small>
-                    <small>点击量:{{ post.clickNum }}&nbsp;&nbsp;</small>
-                </a>
+                {{ show_post(post) }}
             {% endfor %}
         </div>
         {{ show_footer() }}

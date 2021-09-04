@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from "macros.html" import show_flash with context %}
+{% from "macros.html" import show_footer %}
+{% from "macros.html" import show_post %}
+{% from "macros.html" import show_comment %}
+
+
+{% block content %}
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="page-header">
+            <h1>{{ searchPostNumber }} <small>Posts</small></h1>
+        </div>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for post in posts %}
+                {{ show_post(post) }}
+            {% endfor %}
+        </ul>
+
+        <div class="page-header">
+            <h1>{{ searchCommentNumber }} <small>Comments</small></h1>
+        </div>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for comment in comments %}
+                {{ show_comment(comment, isHref=True) }}
+            {% endfor %}
+        </ul>
+        {{ show_footer() }}
+    </div>
+    <div class="col-md-4"></div>
+{% endblock %}
+
+

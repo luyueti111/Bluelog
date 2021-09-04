@@ -38,12 +38,14 @@ class Comment(db.Model):
     name = db.Column(db.String(30))
     body = db.Column(db.Text)
     replyTo = db.Column(db.String(30))
+    commentFloor = db.Column(db.Integer)
     from_admin = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.DateTime, default=datetime.now, index=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
     post = db.relationship('Post', back_populates='comments')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='comments')
+
 
 
 class FakeName(db.Model):
