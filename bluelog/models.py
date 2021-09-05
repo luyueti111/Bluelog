@@ -54,3 +54,14 @@ class FakeName(db.Model):
     post_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     name = db.Column(db.String)
+
+
+class UnreadMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
+    haveRead = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.now, index=True)
+
+
+

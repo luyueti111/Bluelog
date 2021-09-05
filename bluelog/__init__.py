@@ -1,9 +1,11 @@
 import os
 
 import click
+from flask_login import current_user
+from sqlalchemy.sql.elements import and_
 
 from bluelog.forms import SearchForm
-from bluelog.models import User
+from bluelog.models import User, UnreadMessage
 from bluelog.settings import config
 from flask import Flask, render_template
 from bluelog.extensions import bootstrap, db, moment, ckeditor, mail, login_manager
@@ -61,6 +63,16 @@ def register_template_context(app):
         searchForm = SearchForm()
         return dict(searchForm=searchForm)
 
+    @app.context_processor
+    def injectUnreadMessage():
+        if current_user.is_authenticated:
+            user = User.query.get(current_user.id)
+            unreadMessageNum = UnreadMessage.query.filter(and_(UnreadMessage.user_id == user.id,
+                                                               UnreadMessage.haveRead == 0)).count()
+            return dict(unreadMessageNum=unreadMessageNum)
+        else:
+            return dict(unreadMessageNum=0)
+
 
 def register_errors(app):
     @app.errorhandler(404)
@@ -77,10 +89,10 @@ def register_commands(app):
             db.drop_all()
             click.echo('Drop tables.')
         db.create_all()
-        admin = User(email='769163832@qq.com',
-                     password='luyueti1',
-                     isAdmin=True)
-        db.session.add(admin)
+        admin0 = User(email='769163832@qq.com', password='luyueti1', isAdmin=True)
+        admin1 = User(email='123456@qq.com', password='luyueti1', isAdmin=True)
+        db.session.add(admin0)
+        db.session.add(admin1)
         db.session.commit()
         click.echo('Done!')
         click.echo('Initialized database.')

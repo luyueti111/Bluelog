@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
-{% from "macros.html" import show_post %}
-{% from "macros.html" import show_comment %}
+{% from "macros.html" import show_comment_in_admin %}
 
 
 {% block content %}
@@ -19,7 +18,7 @@
         </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for comment in comments %}
-                {{ show_comment(comment, isHref=True, showDelete=True) }}
+                {{ show_comment_in_admin(comment) }}
             {% endfor %}
         </ul>
         {{ show_footer() }}

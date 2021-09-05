@@ -5,11 +5,10 @@ from flask_login import current_user
 from sqlalchemy import and_, or_
 from jieba import lcut_for_search
 
-
 from bluelog import db
 from bluelog.extensions import fake
 from bluelog.forms import PostForm, ReplyForm, SearchForm
-from bluelog.models import Post, Comment, User, FakeName
+from bluelog.models import Post, Comment, User, FakeName, UnreadMessage
 
 blog_bp = Blueprint('blog', __name__)
 
@@ -74,6 +73,20 @@ def replyPage(post_id):
                 fn = FakeName(post_id=post.id, user_id=user.id, name=name)
                 db.session.add(fn)
             db.session.commit()
+
+            if toName != name:
+                if toName is None:
+                    unReadMessage = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
+                    db.session.add(unReadMessage)
+                    db.session.commit()
+                else:
+                    unReadMessage0 = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
+                    toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
+                    unReadMessage1 = UnreadMessage(comment_id=comment.id, user_id=toNameId)
+                    db.session.add(unReadMessage0)
+                    db.session.add(unReadMessage1)
+                    db.session.commit()
+
             return redirect(url_for('blog.replyPage', post_id=post_id))
         else:
             flash('Please Login to Reply Post')
@@ -105,7 +118,6 @@ def searchMessage():
         searchedPost = Post.query.filter(or_(Post.body.op('regexp')(rules),
                                              Post.title.op('regexp')(rules)))
         searchComment = Comment.query.filter(Comment.body.op('regexp')(rules))
-
 
         return render_template('blog/search.html',
                                searchPostNumber=searchedPost.count(),

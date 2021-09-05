@@ -55,6 +55,7 @@
           </form>
           <ul class="nav navbar-nav navbar-right">
               {% if current_user.is_authenticated %}
+                <li role="presentation"><a href="#">Messages <span class="badge">{{ unreadMessageNum }}</span></a></li>
                 <li><a href="{{ url_for('auth.logout', next=request.full_path) }}">Logout</a></li>
               {% else %}
                 <li><a href="{{ url_for('auth.login', next=request.full_path) }}">Login</a></li>

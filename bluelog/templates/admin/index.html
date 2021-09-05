@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
-{% from "macros.html" import show_post %}
-{% from "macros.html" import show_comment %}
+{% from "macros.html" import show_comment_in_href %}
+{% from "macros.html" import show_post_in_index %}
 
 
 {% block content %}
@@ -19,7 +19,7 @@
         </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for post in posts %}
-                {{ show_post(post) }}
+                {{ show_post_in_index(post) }}
             {% endfor %}
         </ul>
         <br>
@@ -29,7 +29,7 @@
         </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for comment in comments %}
-                {{ show_comment(comment, isHref=True) }}
+                {{ show_comment_in_href(comment) }}
             {% endfor %}
         </ul>
         {{ show_footer() }}
