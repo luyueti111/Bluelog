@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% from "macros.html" import show_flash with context %}
+{% from "macros.html" import show_footer %}
+{% from "macros.html" import show_post %}
+{% from "macros.html" import show_comment %}
+
+
+{% block content %}
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <ul class="nav nav-pills nav-justified">
+          <li role="presentation" class="active"><a href="{{ url_for('admin.index') }}">Home</a></li>
+          <li role="presentation"><a href="{{ url_for('admin.managePosts') }}">My Posts</a></li>
+          <li role="presentation"><a href="{{ url_for('admin.manageComments') }}">My Comments</a></li>
+        </ul>
+
+        <div class="page-header">
+            <h2>Recent <small>Posts</small></h2>
+        </div>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for post in posts %}
+                {{ show_post(post) }}
+            {% endfor %}
+        </ul>
+        <br>
+
+        <div class="page-header">
+            <h2>Recent <small>Comments</small></h2>
+        </div>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for comment in comments %}
+                {{ show_comment(comment, isHref=True) }}
+            {% endfor %}
+        </ul>
+        {{ show_footer() }}
+    </div>
+    <div class="col-md-3"></div>
+{% endblock content %}

@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-{% if current_user.is_authenticated %}
-    <h1>you are authenticated {{ current_user.id }}</h1>
-{% else %}
-    <h1>you are not authenticated</h1>
-{% endif %}
-{% endblock content%}

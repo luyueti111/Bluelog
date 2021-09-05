@@ -18,8 +18,27 @@
     </footer>
 {% endmacro %}
 
-
-{% macro show_post(post) %}
+{% macro show_post(post, showDelete=False) %}
+    {% if showDelete %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=post.id) }}">
+                    <span class="badge">{{ post.commentNum }}</span>
+                    <h4 class="list-group-item-heading">{{ post.title }}</h4>
+                    <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word">{{ post.body }}</p>
+                    <small style="right: 0">
+                        最后回复:{{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}&nbsp;&nbsp;
+                    </small>
+                    <small>点击量:{{ post.clickNum }}&nbsp;&nbsp;</small>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="{{ url_for('admin.deletePost', post_id=post.id) }}" class="btn btn-link" onclick="return confirm('Are you Sure?')">Delete</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
     <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=post.id) }}">
         <span class="badge">{{ post.commentNum }}</span>
         <h4 class="list-group-item-heading">{{ post.title }}</h4>
@@ -29,27 +48,58 @@
         </small>
         <small>点击量:{{ post.clickNum }}&nbsp;&nbsp;</small>
     </a>
+    {% endif %}
+
 {% endmacro %}
 
 
-{% macro show_comment(comment, isHref=True) %}
+{% macro show_comment(comment, isHref=True, showDelete=False) %}
     {% set post = comment.post %}
     {% if isHref %}
-        <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=comment.post_id) }}">
-        {% if comment.name == post.name %}
-            <h4 class="list-group-item-heading text-info">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
-        {% else %}
-            <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
-        {% endif %}
+        {% if showDelete %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=comment.post_id) }}">
+                        {% if comment.name == post.name %}
+                            <h4 class="list-group-item-heading text-info">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
+                        {% else %}
+                            <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
+                        {% endif %}
 
-        {% if comment.replyTo is not none and comment.replyTo != comment.name%}
-            <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
-        {% endif %}
-        <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ comment.body }}</p>
-        <small>
-        {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
-        </small>
-        </a>
+                        {% if comment.replyTo is not none and comment.replyTo != comment.name%}
+                            <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
+                        {% endif %}
+                        <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ comment.body }}</p>
+                        <small>
+                            {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
+                        </small>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="{{ url_for('admin.deleteComment', comment_id=comment.id) }}" class="btn btn-link" onclick="return confirm('Are you Sure?')">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+                <a class="list-group-item" href="{{ url_for('blog.replyPage', post_id=comment.post_id) }}">
+                {% if comment.name == post.name %}
+                    <h4 class="list-group-item-heading text-info">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
+                {% else %}
+                    <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
+                {% endif %}
+
+                {% if comment.replyTo is not none and comment.replyTo != comment.name%}
+                    <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
+                {% endif %}
+                <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ comment.body }}</p>
+                <small>
+                    {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
+                </small>
+                </a>
+            {% endif %}
+
     {% else %}
         <li class="list-group-item">
             {% if comment.name == post.name %}
@@ -57,7 +107,6 @@
             {% else %}
                 <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small></h4>
             {% endif %}
-
             {% if comment.replyTo is not none and comment.replyTo != comment.name%}
                 <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
             {% endif %}

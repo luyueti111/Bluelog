@@ -25,6 +25,7 @@ class Post(db.Model):
     name = db.Column(db.String(60))
     clickNum = db.Column(db.Integer, default=0)
     commentNum = db.Column(db.Integer, default=0)
+    postTime = db.Column(db.DateTime, default=datetime.now)
     timestamp = db.Column(db.DateTime, default=datetime.now)
     # category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     # category = db.relationship('Category', back_populates='posts')

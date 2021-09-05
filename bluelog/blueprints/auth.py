@@ -10,11 +10,6 @@ from bluelog.functions import redirect_back
 auth_bp = Blueprint('auth', __name__)
 
 
-@auth_bp.route('/testCurrent')
-def testCurrent():
-    return render_template('auth/testCurrent.html')
-
-
 @auth_bp.route('login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
