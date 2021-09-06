@@ -2,6 +2,8 @@
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
 {% from "macros.html" import show_comment_in_post %}
+{% from "macros.html" import show_errors %}
+
 
 {% block content %}
     <div class="col-md-4"></div>
@@ -31,6 +33,7 @@
                     {{ form.name.label(class="h4") }}<br>
                     {{ form.name(class="form-control ", placeholder="Username", readonly="readonly") }}
                 </div>
+                {{ show_errors(form.name.errors) }}
                 <h4 style="margin-left: 5%">Reply to</h4>
                 <div class="input-group" style="margin:0 auto; width:90%">
                     {{ form.toName(class="selectpicker") }}
@@ -39,6 +42,7 @@
                     {{ form.body.label(class="h4") }}<br>
                     {{ form.body(class="form-control", placeholder="Please Enter Your Message", rows="3", style="resize: none;") }}
                 </div>
+                {{ show_errors(form.body.errors) }}
                 {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
             </div>
         </form>

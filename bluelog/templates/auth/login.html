@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% from "macros.html" import show_flash with context %}
 {% from "macros.html" import show_footer %}
+{% from "macros.html" import show_errors %}
 
 {% block title %}
     <div class="page-header text-center">
@@ -17,10 +18,12 @@
                     {{ form.email.label(class="h4") }}<br>
                     {{ form.email(class="form-control ", placeholder="Email") }}
                 </div>
+                {{ show_errors(form.email.errors) }}
                 <div class="input-group" style="margin:0 auto; width:90%">
                     {{ form.password.label(class="h4") }}<br>
-                    {{ form.password(class="form-control", placeholder="Password") }}
+                    {{ form.password(class="form-control is-invalid", placeholder="Password") }}
                 </div>
+                {{ show_errors(form.password.errors) }}
                 <div class="form-check" style="margin: 10px auto 0;width:90%">
                     {{ form.remember(class="form-check-input") }}
                     <label class="form-check-label">

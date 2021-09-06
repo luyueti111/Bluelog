@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, session
+from flask import Blueprint, render_template, url_for, redirect, session, flash
 from flask_login import current_user, login_user, login_required, logout_user
 
 from bluelog.models import User
@@ -41,10 +41,13 @@ def register():
     registerForm = RegisterForm()
     if registerForm.validate_on_submit():
         email = registerForm.emailAddress.data
-        user = User(email=email, password=registerForm.password.data)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('auth.login'))
+        if not User.query.filter(User.email == email):
+            user = User(email=email, password=registerForm.password.data)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('auth.login'))
+        else:
+            flash("This Email has already been used")
 
     return render_template('auth/register.html', registerForm=registerForm)
 
