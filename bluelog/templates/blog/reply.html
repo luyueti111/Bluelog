@@ -8,10 +8,12 @@
     <div class="col-md-4">
         <div class="panel panel-info" style="margin:0 auto; width:90%;">
             <div class="panel-heading">
-                <h3 class="panel-title" style="font-size: x-large">{{ post.title }}<br><small>#{{ post.name }}</small></h3>
+                <h3 class="panel-title" style="font-size: x-large">{{ post.title }}<br><small>#{{ post.name }}</small>
+                </h3>
             </div>
             <div class="panel-body">
-                <p class="list-group-item-text" style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ post.body }}</p>
+                <p class="list-group-item-text"
+                   style="width: 100%; word-break: break-all; word-wrap: break-word; font-size: medium">{{ post.body }}</p>
                 <small>
                     {{ post.timestamp.strftime('%Y/%m/%d %H:%M') }}
                 </small>
@@ -40,8 +42,8 @@
                 {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
             </div>
         </form>
-    {{ show_flash() }}
-    {{ show_footer() }}
+        {{ show_flash() }}
+        {{ show_footer() }}
     </div>
     <div class="col-md-4"></div>
 {% endblock %}

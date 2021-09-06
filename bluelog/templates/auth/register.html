@@ -3,7 +3,7 @@
 
 {% block title %}
     <div class="page-header text-center">
-      <h1>Register to<small>Say Hello</small></h1>
+        <h1>Register to<small>Say Hello</small></h1>
     </div>
 {% endblock title %}
 
@@ -11,24 +11,24 @@
     <div class="col-md-4"></div>
     <div class="col-md-4">
         <form role="form" method="post">
-        {{ registerForm.csrf_token }}
-        <div class="form-group">
-            <div class="input-group" style="margin:0 auto; width:90%">
-                {{ registerForm.emailAddress.label(class="h4") }}<br>
-                {{ registerForm.emailAddress(class="form-control ", placeholder="Email") }}
+            {{ registerForm.csrf_token }}
+            <div class="form-group">
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ registerForm.emailAddress.label(class="h4") }}<br>
+                    {{ registerForm.emailAddress(class="form-control ", placeholder="Email") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ registerForm.password.label(class="h4") }}<br>
+                    {{ registerForm.password(class="form-control", placeholder="Password") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ registerForm.password2.label(class="h4") }}<br>
+                    {{ registerForm.password2(class="form-control", placeholder="Password") }}
+                </div>
+                {{ registerForm.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
             </div>
-            <div class="input-group" style="margin:0 auto; width:90%">
-                {{ registerForm.password.label(class="h4") }}<br>
-                {{ registerForm.password(class="form-control", placeholder="Password") }}
-            </div>
-            <div class="input-group" style="margin:0 auto; width:90%">
-                {{ registerForm.password2.label(class="h4") }}<br>
-                {{ registerForm.password2(class="form-control", placeholder="Password") }}
-            </div>
-            {{ registerForm.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
-        </div>
         </form>
-    {{ show_footer() }}
+        {{ show_footer() }}
     </div>
     <div class="col-md-4"></div>
 {% endblock content %}

@@ -4,34 +4,34 @@
 
 {% block title %}
     <div class="page-header text-center">
-      <h1>Log in <small>to say hello</small></h1>
+        <h1>Log in <small>to say hello</small></h1>
     </div>
 {% endblock title %}
 {% block content %}
-<div class="col-md-4"></div>
-<div class="col-md-4">
-    <form role="form" method="post">
-    {{ form.csrf_token }}
-    <div class="form-group">
-        <div class="input-group" style="margin:0 auto; width:90%">
-            {{ form.email.label(class="h4") }}<br>
-            {{ form.email(class="form-control ", placeholder="Email") }}
-        </div>
-        <div class="input-group" style="margin:0 auto; width:90%">
-            {{ form.password.label(class="h4") }}<br>
-            {{ form.password(class="form-control", placeholder="Password") }}
-        </div>
-        <div class="form-check" style="margin: 10px auto 0;width:90%">
-            {{ form.remember(class="form-check-input") }}
-            <label class="form-check-label">
-                {{ form.remember.label(style="font-weight: lighter") }}
-            </label>
-        </div>
-        {{ show_flash() }}
-        {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form role="form" method="post">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.email.label(class="h4") }}<br>
+                    {{ form.email(class="form-control ", placeholder="Email") }}
+                </div>
+                <div class="input-group" style="margin:0 auto; width:90%">
+                    {{ form.password.label(class="h4") }}<br>
+                    {{ form.password(class="form-control", placeholder="Password") }}
+                </div>
+                <div class="form-check" style="margin: 10px auto 0;width:90%">
+                    {{ form.remember(class="form-check-input") }}
+                    <label class="form-check-label">
+                        {{ form.remember.label(style="font-weight: lighter") }}
+                    </label>
+                </div>
+                {{ show_flash() }}
+                {{ form.submit(class="btn btn-primary", type="submit", style="margin-top: 10px; margin-left: 5%") }}
+            </div>
+        </form>
+        {{ show_footer() }}
     </div>
-    </form>
-    {{ show_footer() }}
-</div>
-<div class="col-md-4"></div>
+    <div class="col-md-4"></div>
 {% endblock content %}
