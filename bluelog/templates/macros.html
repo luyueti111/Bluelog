@@ -46,10 +46,16 @@
                     </small>
                     <small>点击量:{{ post.clickNum }}&nbsp;&nbsp;</small>
                 </a>
-            </div>
-            <div class="col-md-1">
-                <a href="{{ url_for('admin.deletePost', post_id=post.id) }}" class="btn btn-link"
-                   onclick="return confirm('Are you Sure?')">Delete</a>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-1">
+                            <a href="{{ url_for('admin.deletePost', post_id=post.id) }}"
+                               class="btn btn-link text-right"
+                               onclick="return confirm('Are you Sure?')" style="margin-right: 5%">Delete</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -65,7 +71,7 @@
             <h4 class="list-group-item-heading">{{ comment.name }}<small>&nbsp;&nbsp;&nbsp;#{{ comment.commentFloor }}</small>
             </h4>
         {% endif %}
-        {% if comment.replyTo is not none and comment.replyTo != comment.name %}
+        {% if comment.replyTo is not none %}
             <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
         {% endif %}
         <p class="list-group-item-text"
@@ -88,7 +94,7 @@
             </h4>
         {% endif %}
 
-        {% if comment.replyTo is not none and comment.replyTo != comment.name %}
+        {% if comment.replyTo is not none %}
             <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
         {% endif %}
         <p class="list-group-item-text"
@@ -113,7 +119,7 @@
                         </h4>
                     {% endif %}
 
-                    {% if comment.replyTo is not none and comment.replyTo != comment.name %}
+                    {% if comment.replyTo is not none %}
                         <h5><small>Reply to&nbsp;&nbsp;</small>{{ comment.replyTo }}</h5>
                     {% endif %}
                     <p class="list-group-item-text"
@@ -122,10 +128,16 @@
                         {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
                     </small>
                 </a>
-            </div>
-            <div class="col-md-1">
-                <a href="{{ url_for('admin.deleteComment', comment_id=comment.id) }}" class="btn btn-link"
-                   onclick="return confirm('Are you Sure?')">Delete</a>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-1">
+                            <a href="{{ url_for('admin.deleteComment', comment_id=comment.id) }}"
+                               class="btn btn-link text-right"
+                               onclick="return confirm('Are you Sure?')" style="margin-right: 5%">Delete</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

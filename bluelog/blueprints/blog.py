@@ -74,18 +74,31 @@ def replyPage(post_id):
                 db.session.add(fn)
             db.session.commit()
 
-            if toName != name:
-                if toName is None:
-                    unReadMessage = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
-                    db.session.add(unReadMessage)
-                    db.session.commit()
-                else:
-                    unReadMessage0 = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
-                    toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
-                    unReadMessage1 = UnreadMessage(comment_id=comment.id, user_id=toNameId)
-                    db.session.add(unReadMessage0)
-                    db.session.add(unReadMessage1)
-                    db.session.commit()
+
+            # toName is None意味着消息是回复给楼主的
+            # name == post.name意味着消息是楼主发出的
+            if toName is None and name != post.name:
+                # 用户回复给楼主
+                unReadMessage = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
+                db.session.add(unReadMessage)
+                db.session.commit()
+            elif toName is None and name == post.name:
+                # 楼主回复楼主
+                pass
+            elif toName is not None and name != post.name:
+                # 用户回复用户
+                unReadMessage0 = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
+                toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
+                unReadMessage1 = UnreadMessage(comment_id=comment.id, user_id=toNameId)
+                db.session.add(unReadMessage0)
+                db.session.add(unReadMessage1)
+                db.session.commit()
+            elif name == post.name and toName is not None:
+                # 楼主回复用户
+                toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
+                unReadMessage = UnreadMessage(comment_id=comment.id, user_id=toNameId)
+                db.session.add(unReadMessage)
+                db.session.commit()
 
             return redirect(url_for('blog.replyPage', post_id=post_id))
         else:

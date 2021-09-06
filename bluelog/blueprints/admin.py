@@ -1,8 +1,10 @@
 from flask import Blueprint, redirect, url_for, render_template
 from flask_login import current_user
+from sqlalchemy import and_
+from sqlalchemy.testing import in_
 
 from bluelog import User, db
-from bluelog.models import Post, Comment
+from bluelog.models import Post, Comment, UnreadMessage
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -15,7 +17,7 @@ def login():
 @admin_bp.route('/index')
 def index():
     if not current_user.is_authenticated:
-        return redirect(url_for('blog.index'))
+        return redirect(url_for('auth.login'))
     else:
         recentPosts = Post.query.filter(Post.user_id == current_user.id).order_by(Post.postTime.desc()).limit(5)
         recentComments = Comment.query.filter(Comment.user_id == current_user.id) \
@@ -47,9 +49,12 @@ def deletePost(post_id):
     if post:
         posterId = post.user_id
         if current_user.is_authenticated and current_user.id == posterId:
-            db.session.delete(post)
             for comment in post.comments:
+                unreadMessages = UnreadMessage.query.filter(UnreadMessage.comment_id == comment.id).all()
+                for unreadMessage in unreadMessages:
+                    db.session.delete(unreadMessage)
                 db.session.delete(comment)
+            db.session.delete(post)
             db.session.commit()
             return redirect(url_for('admin.managePosts'))
         else:
@@ -64,13 +69,21 @@ def deleteComment(comment_id):
     if comment:
         commenterId = comment.user_id
         if current_user.is_authenticated and current_user.id == commenterId:
+            unreadMessages = UnreadMessage.query.filter(UnreadMessage.comment_id == comment.id).all()
+            for unreadMessage in unreadMessages:
+                db.session.delete(unreadMessage)
             db.session.delete(comment)
             db.session.commit()
             return redirect(url_for('admin.manageComments'))
-
     return redirect(url_for('blog.index'))
 
 
-
-
-
+@admin_bp.route('/unreadMessages')
+def manageUnreadMessages():
+    if not current_user.is_authenticated:
+        return redirect(url_for('blog.index'))
+    else:
+        unreadMessages = UnreadMessage.query.filter(and_(UnreadMessage.user_id == current_user.id,
+                                                         UnreadMessage.haveRead == 0)).all()
+        unreadMessages = Comment.query.filter(Comment.id.in_([unreadMessage.comment_id for unreadMessage in unreadMessages])).all()
+        return render_template('admin/manageUnreadMessage.html', comments=unreadMessages)
