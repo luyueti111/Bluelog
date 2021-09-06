@@ -1,6 +1,7 @@
-from flask import request, redirect, url_for
-import requests, random
+import random
+import requests
 from bs4 import BeautifulSoup
+from flask import request, redirect, url_for
 
 
 def redirect_back(default='hello', **kwargs):

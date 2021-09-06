@@ -74,7 +74,6 @@ def replyPage(post_id):
                 db.session.add(fn)
             db.session.commit()
 
-
             # toName is None意味着消息是回复给楼主的
             # name == post.name意味着消息是楼主发出的
             if toName is None and name != post.name:
@@ -137,3 +136,5 @@ def searchMessage():
                                searchCommentNumber=searchComment.count(),
                                posts=searchedPost,
                                comments=searchComment)
+
+    return redirect(url_for('blog.index'))
