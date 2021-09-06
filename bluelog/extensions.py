@@ -12,7 +12,8 @@ moment = Moment()
 ckeditor = CKEditor()
 mail = Mail()
 login_manager = LoginManager()
-fake = Faker()
+fake = Faker(locale='zh_CN')
+
 
 @login_manager.user_loader
 def load_user(user_id):

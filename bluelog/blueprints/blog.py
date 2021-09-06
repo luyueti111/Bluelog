@@ -87,14 +87,16 @@ def replyPage(post_id):
             elif toName is not None and name != post.name:
                 # 用户回复用户
                 unReadMessage0 = UnreadMessage(comment_id=comment.id, user_id=post.user_id)
-                toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
+                toNameId = FakeName.query.filter(
+                    and_(FakeName.name == toName, FakeName.post_id == post.id)).first().user_id
                 unReadMessage1 = UnreadMessage(comment_id=comment.id, user_id=toNameId)
                 db.session.add(unReadMessage0)
                 db.session.add(unReadMessage1)
                 db.session.commit()
             elif name == post.name and toName is not None:
                 # 楼主回复用户
-                toNameId = FakeName.query.filter(FakeName.name == toName).first().user_id
+                toNameId = FakeName.query.filter(
+                    and_(FakeName.name == toName, FakeName.post_id == post.id)).first().user_id
                 unReadMessage = UnreadMessage(comment_id=comment.id, user_id=toNameId)
                 db.session.add(unReadMessage)
                 db.session.commit()
@@ -108,9 +110,15 @@ def replyPage(post_id):
         if fakeName:
             replyForm.name.data = fakeName.name
         else:
-            replyForm.name.data = fake.name()
+            nameTemp = fake.name()
+            while nameTemp in [fakeName.name for fakeName in fakesNames]:
+                nameTemp = fake.name()
+            replyForm.name.data = nameTemp
     else:
-        replyForm.name.data = fake.name()
+        nameTemp = fake.name()
+        while nameTemp in [fakeName.name for fakeName in fakesNames]:
+            nameTemp = fake.name()
+        replyForm.name.data = nameTemp
     return render_template('blog/reply.html',
                            comments=comments,
                            form=replyForm,
