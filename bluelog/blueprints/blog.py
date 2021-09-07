@@ -48,7 +48,13 @@ def index():
 
 @blog_bp.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def replyPage(post_id):
-    replyForm = ReplyForm()
+
+    replyName = request.args.get('replyName')
+    if replyName:
+        replyForm = ReplyForm(toName=replyName)
+    else:
+        replyForm = ReplyForm()
+
     fakesNames = FakeName.query.filter_by(post_id=post_id).all()
     replyForm.toName.choices = [(fakeName.name, fakeName.name) for fakeName in fakesNames]
     post = Post.query.get(post_id)
@@ -146,3 +152,9 @@ def searchMessage():
                                comments=searchComment)
 
     return redirect(url_for('blog.index'))
+
+
+@blog_bp.route('/replyFromComment/<int:comment_id>')
+def replyFromComment(comment_id):
+    comment = Comment.query.get(comment_id)
+    return redirect(url_for('blog.replyPage', post_id=comment.post_id, replyName=comment.name) + '#comment-form')

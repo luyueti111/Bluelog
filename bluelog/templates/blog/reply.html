@@ -26,7 +26,7 @@
                 {{ show_comment_in_post(comment) }}
             {% endfor %}
         </ul>
-        <form role="form" method="post">
+        <form role="form" method="post" id="comment-form">
             {{ form.csrf_token }}
             <div class="form-group">
                 <div class="input-group" style="margin:0 auto; width:90%">
