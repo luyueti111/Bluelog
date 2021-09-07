@@ -1,7 +1,6 @@
 from flask import Blueprint, redirect, url_for, render_template
 from flask_login import current_user
 from sqlalchemy import and_
-from sqlalchemy.testing import in_
 
 from bluelog import User, db
 from bluelog.models import Post, Comment, UnreadMessage
@@ -30,7 +29,7 @@ def managePosts():
     if not current_user.is_authenticated:
         return redirect(url_for('blog.index'))
     else:
-        allPosts = Post.query.filter(Post.user_id == current_user.id).all()
+        allPosts = Post.query.filter(Post.user_id == current_user.id).order_by(Post.postTime.desc()).all()
         return render_template('admin/managePosts.html', posts=allPosts)
 
 
@@ -39,7 +38,7 @@ def manageComments():
     if not current_user.is_authenticated:
         return redirect(url_for('blog.index'))
     else:
-        allComments = Comment.query.filter(Comment.user_id == current_user.id)
+        allComments = Comment.query.filter(Comment.user_id == current_user.id).order_by(Comment.timestamp.desc()).all()
         return render_template('admin/manageComments.html', comments=allComments)
 
 
@@ -85,5 +84,23 @@ def manageUnreadMessages():
     else:
         unreadMessages = UnreadMessage.query.filter(and_(UnreadMessage.user_id == current_user.id,
                                                          UnreadMessage.haveRead == 0)).all()
-        unreadMessages = Comment.query.filter(Comment.id.in_([unreadMessage.comment_id for unreadMessage in unreadMessages])).all()
-        return render_template('admin/manageUnreadMessage.html', comments=unreadMessages)
+        readMessages = UnreadMessage.query.filter(and_(UnreadMessage.user_id == current_user.id,
+                                                       UnreadMessage.haveRead == 1)).all()
+        unreadMessages = Comment.query.filter(Comment.id.in_([unreadMessage.comment_id for unreadMessage in unreadMessages])).order_by(Comment.timestamp.desc()).all()
+        readMessages = Comment.query.filter(Comment.id.in_([readMessage.comment_id for readMessage in readMessages])).order_by(Comment.timestamp.desc()).all()
+        return render_template('admin/manageUnreadMessage.html', comments=unreadMessages, readComments=readMessages)
+
+
+@admin_bp.route('/readAll')
+def readAll():
+    if not current_user.is_authenticated:
+        return redirect(url_for('blog.index'))
+    else:
+        unreadMessages = UnreadMessage.query.filter(and_(UnreadMessage.user_id == current_user.id,
+                                                         UnreadMessage.haveRead == 0)).all()
+        for unreadMessage in unreadMessages:
+            unreadMessage.haveRead = True
+        db.session.commit()
+        return redirect(url_for('admin.manageUnreadMessages'))
+
+

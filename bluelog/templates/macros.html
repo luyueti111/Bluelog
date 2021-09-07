@@ -71,7 +71,7 @@
         <small>
             {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
         </small>
-        <a class="btn btn-xs pull-right" href="{{ url_for('blog.replyFromComment', comment_id=comment.id) }}">Reply</a>
+        <a class="btn  btn-link btn-xs pull-right" href="{{ url_for('blog.replyFromComment', comment_id=comment.id) }}">Reply</a>
     </li>
 {% endmacro %}
 
@@ -99,7 +99,8 @@
             <small>
                 {{ comment.timestamp.strftime('%Y/%m/%d %H:%M') }}
             </small>
-            <a class="btn btn-xs pull-right" href="{{ url_for('blog.replyFromComment', comment_id=comment.id) }}">Reply</a>
+            <a class="btn btn-link btn-xs pull-right"
+               href="{{ url_for('blog.replyFromComment', comment_id=comment.id) }}">Reply</a>
         </a>
     </li>
 {% endmacro %}

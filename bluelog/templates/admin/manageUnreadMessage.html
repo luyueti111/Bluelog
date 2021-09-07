@@ -15,10 +15,21 @@
         </ul>
 
         <div class="page-header">
-            <h2>Unread <small>Messages</small></h2>
+            <h2>Unread <small>Messages</small>
+                <a href="{{ url_for('admin.readAll') }}" class="btn btn-default btn-sm pull-right"
+                       style="margin-right: 5%">Read All</a></h2>
         </div>
         <ul class="list-group" style="margin:0 auto; width:90%">
             {% for comment in comments %}
+                {{ show_comment_in_href(comment) }}
+            {% endfor %}
+        </ul>
+
+        <div class="page-header">
+            <h2>Read <small>Messages</small></h2>
+        </div>
+        <ul class="list-group" style="margin:0 auto; width:90%">
+            {% for comment in readComments %}
                 {{ show_comment_in_href(comment) }}
             {% endfor %}
         </ul>
