@@ -20,7 +20,6 @@ requests = "*"
 bs4 = "*"
 flask-wtf = "==0.14.3"
 pipreqs = "*"
-jieba = "*"
 pip-review = "*"
 
 [dev-packages]

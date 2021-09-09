@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user
 from sqlalchemy import and_, or_
-from jieba import lcut_for_search
+# from jieba import lcut_for_search
 
 from bluelog import db
 from bluelog.extensions import fake
@@ -136,7 +136,7 @@ def searchMessage():
     searchForm = SearchForm()
     if searchForm.validate_on_submit():
         searchRule = searchForm.body.data
-        searchList = lcut_for_search(searchRule)
+        searchList = [searchRule]
         rules = ""
         for rule in searchList:
             rules += rule + "|"
