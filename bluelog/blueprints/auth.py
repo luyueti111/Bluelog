@@ -41,7 +41,7 @@ def register():
     registerForm = RegisterForm()
     if registerForm.validate_on_submit():
         email = registerForm.emailAddress.data
-        if not User.query.filter(User.email == email):
+        if not User.query.filter(User.email == email).first():
             user = User(email=email, password=registerForm.password.data)
             db.session.add(user)
             db.session.commit()

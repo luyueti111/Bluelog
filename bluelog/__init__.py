@@ -75,9 +75,7 @@ def register_template_context(app):
 
 
 def register_errors(app):
-    @app.errorhandler(404)
-    def bad_request(e):
-        return render_template('errors/error_test.html'), 404
+    pass
 
 
 def register_commands(app):
